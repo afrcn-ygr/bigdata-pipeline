@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: analytics-app-deployment
+  labels:
+    app: analytics-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: analytics-app
+  template:
+    metadata:
+      labels:
+        app: analytics-app
+    spec:
+      containers:
+      - name: analytics-container
+        image: analytics-app:v1
+        imagePullPolicy: Never  # Use local image
+        args: ["python", "app.py"]
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+      restartPolicy: Never  # For batch job style
